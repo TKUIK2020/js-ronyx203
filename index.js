@@ -1,23 +1,11 @@
 const http = require("http");
 const fs = require("fs");
+const generateImage = require('random-image-creator');
+
 http.createServer(function(request, response){
 console.log(`Запрошенный адрес: ${request.url}`);
-if(request.url.startsWith("/public/")){
-// получаем путь после слеша
-const filePath = request.url.substr(1);
-fs.readFile(filePath, function(error, data){
-if(error){
-response.statusCode = 404;
-response.end("Resourse not found!");
-}
-else{
+const img = generateImage(280,400)
 response.setHeader("Content-Type", "text/html");
-response.end(data);
-}
-})
-}
-else{
-// во всех остальных случаях отправляем строку hello world!
-response.end("Hello World!");
-}
+response.end("<img src='"+img+"'>");
+
 }).listen(8888);
